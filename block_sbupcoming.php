@@ -136,7 +136,7 @@ class block_sbupcoming extends block_base
                     $content .= $events[$i]->name;
                 }
             }
-            $events[$i]->time = str_replace('&raquo;', '<br>&raquo;', $events[$i]->time);
+//            $events[$i]->time = str_replace('&raquo;', '<br>&raquo;', $events[$i]->time);
             if ($showcourselink && !empty($events[$i]->courselink)) {
                 $content .= html_writer::div($events[$i]->courselink, 'course');
             }
