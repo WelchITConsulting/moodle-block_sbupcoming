@@ -136,8 +136,8 @@ class block_sbupcoming extends block_base
                     $content .= $events[$i]->name;
                 }
             }
-            if ($events[$i]->modulename !== 0) {
-                $events[$i]->time = str_replace('&raquo;', get_string('until', 'block_sbupcoming'), $events[$i]->time);
+            if (!empty($events[$i]->modulename)) {
+                $events[$i]->time = str_replace('<strong>&raquo;</strong>', get_string('until', 'block_sbupcoming'), $events[$i]->time);
             } else if (usergetmidnight($events[$i]->timestart + $events[$i]->timeduration) > usergetmidnight($events[$i]->timestart)) {
                 $events[$i]->time = str_replace('&raquo;', '<br>&raquo;', $events[$i]->time);
             }
