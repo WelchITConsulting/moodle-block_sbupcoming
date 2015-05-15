@@ -20,6 +20,6 @@
  * Created  : 15 May 2015
  */
 
-$string['sbupcoming:addinstance']   = 'Add a new upcoming events block';
-$string['sbupcoming:myaddinstance'] = 'Add a new upcoming events block to My Home';
-$string['pluginname']               = 'Upcoming events';
+$string['sbupcoming:addinstance']   = 'Add a new SmartsBridge Upcoming Events block';
+$string['sbupcoming:myaddinstance'] = 'Add a new SmartsBridge Upcoming Events block to My Home';
+$string['pluginname']               = 'SB Upcoming events';

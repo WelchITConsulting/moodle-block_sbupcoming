@@ -20,6 +20,8 @@
  * Created  : 15 May 2015
  */
 
+require_once($CFG->dirroot . '/calendar/lib.php');
+
 class block_sbupcoming extends block_base
 {
     /**
@@ -39,8 +41,6 @@ class block_sbupcoming extends block_base
     public function get_content()
     {
         global $CFG;
-
-        require_once($CFG->dirroot . '/calendar/lib.php');
 
         if ($this->content !== NULL) {
             return $this->content;
@@ -98,7 +98,8 @@ class block_sbupcoming extends block_base
             // ***************************************************
             // Update this functions
             // ***************************************************
-            $this->content->text = calendar_get_block_upcoming($events, $link, $showcourselink);
+//            $this->content->text = calendar_get_block_upcoming($events, $link, $showcourselink);
+            $this->content->text = $this->upcoming_content($events, $link, $showcourselink);
         }
 
         if (empty($this->content->text)) {
@@ -107,5 +108,43 @@ class block_sbupcoming extends block_base
                                  . '</div>';
         }
         return $this->content;
+    }
+
+    private function upcoming_content($events, $linkhref = NULL, $showcourselink = false)
+    {
+        $content = '';
+        $lines = count($events);
+        if (!$lines) {
+            return $content;
+        }
+        for ($i = 0; $i < $lines; ++$i) {
+            if (!isset($events[$i]->time)) {
+                continue;
+            }
+            $events[$i] = calendar_add_event_metadata($events[$i]);
+            $content .= '<div class="event"><span class="icon c0">'
+                      . $events[$i]->icon
+                      . '</span>';
+            if (!empty($events[$i]->referer)) {
+                $content .= $events[$i]->referer;
+            } else {
+                if (!empty($linkhref)) {
+                    $href = calendar_get_link_href(new moodle_url(CALENDAR_URL . $linkhref), 0, 0, 0, $events[$i]->timestart);
+                    $href->set_anchor('event', $events[$i]->id);
+                    $content .= html_writer::link($href, $events[$i]->name);
+                } else {
+                    $content .= $events[$i]->name;
+                }
+            }
+            $events[$i]->time = str_replace('&raquo;', '<br>&raquo;', $events[$i]->time);
+            if ($showcourselink && !empty($events[$i]->courselink)) {
+                $content .= html_writer::div($events[$i]->courselink, 'course');
+            }
+            $content .= '<div class="date">' . $events[$i]->time . '</div></div>';
+            if ($i < $lines - 1) {
+                $content .= '<hr>';
+            }
+        }
+        return $content;
     }
 }
