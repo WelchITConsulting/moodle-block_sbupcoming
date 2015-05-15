@@ -23,3 +23,4 @@
 $string['sbupcoming:addinstance']   = 'Add a new SmartsBridge Upcoming Events block';
 $string['sbupcoming:myaddinstance'] = 'Add a new SmartsBridge Upcoming Events block to My Home';
 $string['pluginname']               = 'SB Upcoming events';
+$string['until']                    = ' until ';
