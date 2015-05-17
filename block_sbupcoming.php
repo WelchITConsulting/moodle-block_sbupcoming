@@ -95,10 +95,6 @@ class block_sbupcoming extends block_base
             $link = 'view.php?view=day&amp;course=' . $courseshown . '&amp;';
             $showcourselink = ($this->page->course->id == SITEID);
 
-            // ***************************************************
-            // Update this functions
-            // ***************************************************
-//            $this->content->text = calendar_get_block_upcoming($events, $link, $showcourselink);
             $this->content->text = $this->upcoming_content($events, $link, $showcourselink);
         }
 
@@ -136,15 +132,42 @@ class block_sbupcoming extends block_base
                     $content .= $events[$i]->name;
                 }
             }
-            if (!empty($events[$i]->modulename)) {
-                $events[$i]->time = str_replace('<strong>&raquo;</strong>', get_string('until', 'block_sbupcoming'), $events[$i]->time);
-            } else if (usergetmidnight($events[$i]->timestart + $events[$i]->timeduration) > usergetmidnight($events[$i]->timestart)) {
-                $events[$i]->time = str_replace('&raquo;', '<br>&raquo;', $events[$i]->time);
-            }
             if ($showcourselink && !empty($events[$i]->courselink)) {
                 $content .= html_writer::div($events[$i]->courselink, 'course');
             }
-            $content .= '<div class="date">' . $events[$i]->time . '</div></div>';
+
+            // Format the time string displayed
+            $timeEnd = $events[$i]->timestart + $events[$i]->timeduration;
+            $userMidnightStart = usergetmidnight($events[$i]->timestart);
+            $userMidnightEnd   = usergetmidnight($timeEnd);
+            if ($events[$i]->timeduration == DAYSECS) {
+                // All day event
+            }
+            $content .= '<div class="date"><strong>'
+                      . get_string('timestart', 'block_sbupcoming')
+                      . '</strong> <time class="upcomingtimestart" datetime="'
+                      . date_format_string($events[$i]->timestart, '')
+                      . '">'
+                      . date_format_string($events[$i]->timestart, '')
+                      . '</time><br><strong>'
+                      . ($userMidnightStart == $userMidnightEnd ? get_string('timeto', 'block_sbupcoming')
+                                                                : get_string('timeuntil', 'block_sbupcoming'))
+                      . '</strong> <time class="upcomingtimeend" datetime="'
+                      . date_format_string($timeEnd, '')
+                      . '">'
+                      . date_format_string($timeEnd, '')
+                      . '</time></div></div>';
+//            if ($timeEnd != $timeStart) {
+//                $events[$i]->time = str_replace('&raquo;', get_string('timeuntil', 'block_sbupcoming'), $events[$i]->time);
+//            } else {
+//                $events[$i]->time = str_replace('&raquo;', get_string('timeto', 'block_sbupcoming'), $events[$i]->time);
+//            }
+//            '<time class="timestart" datetime=""></time>'
+//            $content .= '<div class="date">'
+//                      . get_string('timefrom', 'block_sbupcoming')
+//                      . $events[$i]->time
+//                      . '</div></div>';
+
             if ($i < $lines - 1) {
                 $content .= '<hr>';
             }

@@ -15,16 +15,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Filename : block_sbupcoming
+ * Filename : edit_form
  * Author   : John Welch <jwelch@welchitconsulting.co.uk>
- * Created  : 15 May 2015
+ * Created  : 16 May 2015
  */
 
-$string['configtitle']              = 'Block title';
-$string['pluginname']               = 'SB Upcoming events';
-$string['sbupcoming:addinstance']   = 'Add a new SmartsBridge Upcoming Events block';
-$string['sbupcoming:myaddinstance'] = 'Add a new SmartsBridge Upcoming Events block to My Home';
-$string['timefrom']                 = '<strong>from:</strong> ';
-$string['timeto']                   = '<br>to:';
-$string['timeuntil']                = '<br>until:';
+class block_sbupcoming_edit_form extends block_edit_form
+{
+    protected function specific_definition($mform)
+    {
+        $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
 
+        $mform->addElement('text', 'config_title', get_string('configtitle', 'block_sbupcoming'));
+        $mform->setType('config_title', PARAM_TEXT);
+    }
+
+    function set_data($defaults)
+    {
+        parent::set_data($defaults);
+    }
+}
