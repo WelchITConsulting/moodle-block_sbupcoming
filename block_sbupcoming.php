@@ -181,15 +181,12 @@ class block_sbupcoming extends block_base
                     }
                     $day = calendar_day_representation($events[$i]->timestart, $now, true);
                     $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $endtime);
-                    $content .= html_writer::start_tag('strong')
-                              . get_string('timefrom', 'block_sbupcoming')
-                              . html_writer::end_tag('strong')
-                              . html_writer::start_tag('time', array('class'    => 'upcoming-start',
+                    $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
                                                                      'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
                               . html_writer::link($url, $day)
                               . ', '
                               . trim($time);
-                    } else {
+                } else {
                     $daystart = calendar_day_representation($events[$i]->timestart, $now, true) . ', ';
                     $timestart = calendar_time_representation($events[$i]->timestart);
                     $dayend = calendar_day_representation($endtime, $now, true) . ', ';
