@@ -137,23 +137,23 @@ class block_sbupcoming extends block_base
             }
 
             // Format the time string displayed
-            $timeEnd = $events[$i]->timestart + $events[$i]->timeduration;
+            $timeEnd =  $events[$i]->timestart + $events[$i]->timeduration;
             $userMidnightStart = usergetmidnight($events[$i]->timestart);
             $userMidnightEnd   = usergetmidnight($timeEnd);
             if ($events[$i]->timeduration == DAYSECS) {
                 // All day event
             }
             if ($userMidnightEnd != $userMidnightStart) {
-                $timeFormat = 'g:i A';
+                $timeFormat = '%g:%i %A';
             } else {
-                $timeFormat = 'l J M, g:i A';
+                $timeFormat = '%l %J %M, %g:%i %A';
             }
             $content .= '<div class="date"><strong>'
-                      . get_string('timestart', 'block_sbupcoming')
+                      . get_string('timefrom', 'block_sbupcoming')
                       . '</strong> <time class="upcoming-time-start" datetime="'
-                      . date_format_string($events[$i]->timestart, 'c')
+                      . date_format_string($events[$i]->timestart, '%c')
                       . '">'
-                      . date_format_string($events[$i]->timestart, 'l J M, g:i A')
+                      . date_format_string($events[$i]->timestart, '%l %J %M, %g:%i %A')
                       . '</time><br><strong>'
                       . ($userMidnightStart == $userMidnightEnd ? get_string('timeto', 'block_sbupcoming')
                                                                 : get_string('timeuntil', 'block_sbupcoming'))
