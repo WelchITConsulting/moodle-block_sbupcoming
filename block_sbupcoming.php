@@ -171,7 +171,7 @@ class block_sbupcoming extends block_base
                     } else {
                         $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $endtime);
                         $events[$i]->eventtime = html_writer::link($url, $daystart) . $timestart . ' <strong>$raque;</strong> ';
-                        $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $$events[$i]->timestart);
+                        $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $events[$i]->timestart);
                         $events[$i]->eventtime .= html_writer::link($url, $dayend) . $timeend;
                     }
                 }
