@@ -160,7 +160,10 @@ class block_sbupcoming extends block_base
                     } else {
                         $datestart = calendar_time_representation($events[$i]->timestart);
                         $dateend   = calendar_time_representation($endtime);
-                        $time = $datestart . ' <strong>&raquo;</strong>' . $dateend;
+                        $time = $datestart
+                              . ' <br/>'
+                              . get_string('timeto', 'block_sbupcoming')
+                              . $dateend;
                     }
                     $day = calendar_day_representation($events[$i]->timestart, $now, true);
                     $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $endtime);
@@ -258,7 +261,7 @@ class block_sbupcoming extends block_base
 //                          . '</time></div></div>';
 //            }
             if ($i < $lines - 1) {
-                $content .= '<hr>';
+                $content .= html_writer::tag('hr');
             }
         }
         return $content;
