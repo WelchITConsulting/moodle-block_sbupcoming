@@ -179,7 +179,7 @@ class block_sbupcoming extends block_base
                 $time = calendar_time_representation($events[$i]->timestart);
                 $day = calendar_day_representation($events[$i]->timestart, $now, true);
                 $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php'), 0, 0, 0, $events[$i]->timestart);
-                $events[$i]->eventtime = html_writer::link($url, $day);
+                $events[$i]->eventtime = html_writer::link($url, $day) . ', ' . trim($time);
             }
 echo "\n<!-- " . print_r($events[$i], true) . " -->\n";
 
