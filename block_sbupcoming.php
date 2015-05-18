@@ -143,36 +143,32 @@ class block_sbupcoming extends block_base
             if ($events[$i]->timeduration == DAYSECS) {
                 // All day event
             }
-            if ($userMidnightEnd != $userMidnightStart) {
-                $timeFormat = '%l:%M %p';
-            } else {
-                $timeFormat = '%A %b %e, %l:%M %p';
-            }
             $content .= '<div class="date"><strong>'
                       . get_string('timefrom', 'block_sbupcoming')
                       . '</strong> <time class="upcoming-time-start" datetime="'
                       . date_format_string($events[$i]->timestart, '%FT%T')
                       . '">'
                       . date_format_string($events[$i]->timestart, '%A %b %e, %l:%M %p')
-                      . '</time><br><strong>'
-                      . ($userMidnightStart == $userMidnightEnd ? get_string('timeto', 'block_sbupcoming')
-                                                                : get_string('timeuntil', 'block_sbupcoming'))
-                      . '</strong> <time class="upcoming-time-end" datetime="'
-                      . date_format_string($timeEnd, '%FT%T')
-                      . '">'
-                      . date_format_string($timeEnd, $timeFormat)
-                      . '</time></div></div>';
-//            if ($timeEnd != $timeStart) {
-//                $events[$i]->time = str_replace('&raquo;', get_string('timeuntil', 'block_sbupcoming'), $events[$i]->time);
-//            } else {
-//                $events[$i]->time = str_replace('&raquo;', get_string('timeto', 'block_sbupcoming'), $events[$i]->time);
-//            }
-//            '<time class="timestart" datetime=""></time>'
-//            $content .= '<div class="date">'
-//                      . get_string('timefrom', 'block_sbupcoming')
-//                      . $events[$i]->time
-//                      . '</div></div>';
-
+                      . '</time>';
+            if ($userMidnightEnd == $userMidnightStart) {
+                if ($events[$i]->timeduration != DAYSECS) {
+                    $content .= '<br><strong>'
+                              . get_string('timeto', 'block_sbupcoming')
+                              . '</strong> <time class="upcoming-time-end" datetime="'
+                              . date_format_string($timeEnd, '%FT%T')
+                              . '">'
+                              . date_format_string($timeEnd, '%l:%M %p')
+                              . '</time></div></div>';
+                }
+            } else {
+                $content .= '<br><strong>'
+                          . get_string('timeuntil', 'block_sbupcoming')
+                          . '</strong> <time class="upcoming-time-end" datetime="'
+                          . date_format_string($timeEnd, '%FT%T')
+                          . '">'
+                          . date_format_string($timeEnd, '%A %b %e, %l:%M %p')
+                          . '</time></div></div>';
+            }
             if ($i < $lines - 1) {
                 $content .= '<hr>';
             }
