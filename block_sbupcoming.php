@@ -144,21 +144,21 @@ class block_sbupcoming extends block_base
                 // All day event
             }
             if ($userMidnightEnd != $userMidnightStart) {
-                $timeFormat = '%g:%i %A';
+                $timeFormat = '%l:%M %p';
             } else {
-                $timeFormat = '%l %J %M, %g:%i %A';
+                $timeFormat = '%A %b %e, %l:%M %p';
             }
             $content .= '<div class="date"><strong>'
                       . get_string('timefrom', 'block_sbupcoming')
                       . '</strong> <time class="upcoming-time-start" datetime="'
-                      . date_format_string($events[$i]->timestart, '%c')
+                      . date_format_string($events[$i]->timestart, '%FT%T')
                       . '">'
-                      . date_format_string($events[$i]->timestart, '%l %J %M, %g:%i %A')
+                      . date_format_string($events[$i]->timestart, '%A %b %e, %l:%M %p')
                       . '</time><br><strong>'
                       . ($userMidnightStart == $userMidnightEnd ? get_string('timeto', 'block_sbupcoming')
                                                                 : get_string('timeuntil', 'block_sbupcoming'))
                       . '</strong> <time class="upcoming-time-end" datetime="'
-                      . date_format_string($timeEnd, 'c')
+                      . date_format_string($timeEnd, '%FT%T')
                       . '">'
                       . date_format_string($timeEnd, $timeFormat)
                       . '</time></div></div>';
