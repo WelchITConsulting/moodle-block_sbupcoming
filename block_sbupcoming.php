@@ -154,7 +154,7 @@ class block_sbupcoming extends block_base
                         $time = get_string('allday', 'calendar');
                     } else {
                         $datestart = calendar_time_representation($events[$i]->timestart);
-                        $deteend   = calendar_time_representation($endtime);
+                        $dateend   = calendar_time_representation($endtime);
                         $time = $datestart . ' <strong>&raquo;</strong>' . $dateend;
                     }
                     $day = calendar_day_representation($events[$i]->timestart, $now, true);
