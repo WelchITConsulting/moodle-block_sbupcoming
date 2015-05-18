@@ -261,7 +261,7 @@ class block_sbupcoming extends block_base
 //                          . '</time></div></div>';
 //            }
             if ($i < $lines - 1) {
-                $content .= html_writer::tag('hr');
+                $content .= html_writer::empty_tag('hr');
             }
         }
         return $content;
