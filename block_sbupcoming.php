@@ -150,7 +150,7 @@ class block_sbupcoming extends block_base
             } else {
                 $timeTo = '<strong>'
                         . get_string('timeuntil', 'block_sbupcoming')
-                        . '</strong> l J M, g:i A'
+                        . '</strong> l J M, g:i A';
             }
             $content .= '<div class="date"><strong>'
                       . get_string('timestart', 'block_sbupcoming')
