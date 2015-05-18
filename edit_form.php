@@ -32,6 +32,17 @@ class block_sbupcoming_edit_form extends block_edit_form
 
     function set_data($defaults)
     {
+        if (!$this->block->user_can_edit() && !empty($this->block->config->title)) {
+            $title = $this->block->title;
+            $defaults->config_title = format_string($title, true, $this->page->context());
+            unset($this->block->config->title);
+        }
         parent::set_data($defaults);
+        if (!isset($this->block->config)) {
+            $this->block->config = new stdClass();
+            if (isset($title)) {
+                $this->block->config->title = $title;
+            }
+        }
     }
 }

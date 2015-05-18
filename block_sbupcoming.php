@@ -32,6 +32,12 @@ class block_sbupcoming extends block_base
         $this->title = get_string('pluginname', 'block_sbupcoming');
     }
 
+    public function specialization()
+    {
+        $this->title = empty($this->config->title) ? format_string(get_string('newsbupcomingblock', 'block_sbupcoming'))
+                                                   : format_string($this->config->title);
+    }
+
     /**
      * Return the content of this block
      *
