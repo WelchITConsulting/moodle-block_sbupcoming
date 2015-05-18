@@ -143,10 +143,7 @@ class block_sbupcoming extends block_base
             }
 
             // Format the time string displayed
-            $content .= html_writer::start_div('date')
-                      . html_writer::start_tag('strong')
-                      . get_string('timefrom', 'block_sbupcoming')
-                      . html_writer::end_tag('strong');
+            $content .= html_writer::start_div('date');
 
             $endtime =  $events[$i]->timestart + $events[$i]->timeduration;
             $now = time();
@@ -167,13 +164,17 @@ class block_sbupcoming extends block_base
                         $datestart = calendar_time_representation($events[$i]->timestart);
                         $dateend   = calendar_time_representation($endtime);
                         $time = $datestart
-                              . ' <br/>'
+                              . ' <br/><strong>'
                               . get_string('timeto', 'block_sbupcoming')
+                              . '</strong> '
                               . $dateend;
                     }
                     $day = calendar_day_representation($events[$i]->timestart, $now, true);
                     $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $endtime);
-                    $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
+                    $content .= html_writer::start_tag('strong')
+                              . get_string('timefrom', 'block_sbupcoming')
+                              . html_writer::end_tag('strong')
+                              . html_writer::start_tag('time', array('class'    => 'upcoming-start',
                                                                      'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
                               . html_writer::link($url, $day)
                               . ', '
@@ -189,7 +190,10 @@ class block_sbupcoming extends block_base
                     //***********************
                         $events[$i]->eventtime = $timestart . ' <strong>&raquo;</strong> ' . html_writer::link($url, $dayend) . $timeend;
                     //***********************
-                        $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
+                        $content .= html_writer::start_tag('strong')
+                                  . get_string('timefrom', 'block_sbupcoming')
+                                  . html_writer::end_tag('strong')
+                                  . html_writer::start_tag('time', array('class'    => 'upcoming-start',
                                                                          'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
                                   . html_writer::link($url, $dayend)
                                   . trim($timeend);
@@ -200,7 +204,10 @@ class block_sbupcoming extends block_base
                     //***********************
                         $events[$i]->eventtime = html_writer::link($url, $daystart) . $timestart . ' <strong>$raque;</strong> ';
                     //***********************
-                        $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
+                        $content .= html_writer::start_tag('strong')
+                                  . get_string('timefrom', 'block_sbupcoming')
+                                  . html_writer::end_tag('strong')
+                                  . html_writer::start_tag('time', array('class'    => 'upcoming-start',
                                                                          'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
                                   . html_writer::link($url, $daystart)
                                   . trim($timestart)
