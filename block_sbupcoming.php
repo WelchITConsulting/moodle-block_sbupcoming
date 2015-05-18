@@ -157,17 +157,27 @@ class block_sbupcoming extends block_base
             if ($events[$i]->timeduration) {
                 $userMidnightStart = usergetmidnight($events[$i]->timestart);
                 $userMidnightEnd   = usergetmidnight($endtime);
+
+                $isoStartDate = date_format_string($events[$i]->timestart, '%FT%T');
+                $isoEndDate   = date_format_string($endtime, '%FT%T');
+
                 if ($userMidnightStart == $userMidnightEnd) {
                     if ($events[$i]->timeduration == DAYSECS) {
                         $time = get_string('allday', 'calendar');
                     } else {
                         $datestart = calendar_time_representation($events[$i]->timestart);
                         $dateend   = calendar_time_representation($endtime);
-                        $time = $datestart
-                              . ' <br/><strong>'
+                        $time = html_writer::start_tag('time', array('class'    => 'upcoming-start',
+                                                                     'datetime' => $isoStartDate))
+                              . $datestart
+                              . html_writer::end_tag('time')
+                              . ' <strong>'
                               . get_string('timeto', 'block_sbupcoming')
                               . '</strong> '
-                              . $dateend;
+                              . html_writer::start_tag('time', array('class'    => 'upcoming-end',
+                                                                     'datetime' => $isoEndDate))
+                              . $dateend
+                              . html_writer::end_tag('time');
                     }
                     $day = calendar_day_representation($events[$i]->timestart, $now, true);
                     $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $endtime);
