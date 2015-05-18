@@ -95,7 +95,7 @@ class block_sbupcoming extends block_base
             $link = 'view.php?view=day&amp;course=' . $courseshown . '&amp;';
             $showcourselink = ($this->page->course->id == SITEID);
 
-            $this->content->text = $this->upcoming_content($events, $link, $showcourselink);
+            $this->content->text = $this->upcoming_content($courses, $events, $link, $showcourselink);
         }
 
         if (empty($this->content->text)) {
@@ -106,7 +106,7 @@ class block_sbupcoming extends block_base
         return $this->content;
     }
 
-    private function upcoming_content($events, $linkhref = NULL, $showcourselink = false)
+    private function upcoming_content($courses, $events, $linkhref = NULL, $showcourselink = false)
     {
         $content = '';
         $lines = count($events);
@@ -137,12 +137,59 @@ class block_sbupcoming extends block_base
             }
 
             // Format the time string displayed
-            $timeEnd =  $events[$i]->timestart + $events[$i]->timeduration;
-            $userMidnightStart = usergetmidnight($events[$i]->timestart);
-            $userMidnightEnd   = usergetmidnight($timeEnd);
-            if ($events[$i]->timeduration == DAYSECS) {
-                // All day event
+            $endtime =  $events[$i]->timestart + $events[$i]->timeduration;
+            $now = time();
+            $linkparams = array('view' => 'day');
+            if (!empty($courses)) {
+                $courses = array_diff($courses, array(SITEID));
+                if (count($courses) == 1) {
+                    $linkparams['course'] = reset($courses);
+                }
             }
+            if ($events[$i]->timeduration) {
+                $userMidnightStart = usergetmidnight($events[$i]->timestart);
+                $userMidnightEnd   = usergetmidnight($endtime);
+                if ($userMidnightStart == $userMidnightEnd) {
+                    if ($events[$i]->timeduration == DAYSECS) {
+                        $time = get_string('allday', 'calendar');
+                    } else {
+                        $datestart = calendar_time_representation($events[$id]->timestart);
+                        $deteend   = calendar_time_representation($endtime);
+                        $time = $datestart . ' <strong>&raquo;</strong>' . $dateend;
+                    }
+                    $day = calendar_day_representation($events[$i]->timestart, $now, true);
+                    $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $endtime);
+                    $events[$i]->eventtime = html_writer::link($url, $day) . ', ' . $time;
+                } else {
+                    $daystart = calendar_day_representation($events[$i]->timestart, $now, true) . ', ';
+                    $timestart = calendar_time_representation($events[$i]->timestart);
+                    $dayend = calendar_day_representation($endtime, $now, true) . ', ';
+                    $timeend = calendar_time_representation($endtime);
+                    if (($now >= $userMidnightStart) && ($now < strtotime('+1 day', $userMidnightStart))) {
+                        $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $endtime);
+                        $events[$i]->eventtime = $timestart . ' <strong>&raquo;</strong> ' . html_writer::link($url, $dayend) . $timeend;
+                    } else {
+                        $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $endtime);
+                        $events[$i]->eventtime = html_writer::link($url, $daystart) . $timestart . ' <strong>$raque;</strong> ';
+                        $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $$events[$i]->timestart);
+                        $events[$i]->eventtime .= html_writer::link($url, $dayend) . $timeend;
+                    }
+                }
+            } else {    // No time duration
+                $time = calendar_time_representation($events[$i]->timestart);
+                $day = calendar_day_representation($events[$i]->timestart, $now, true);
+                $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php'), 0, 0, 0, $events[$i]->timestart);
+                $events[$i]->eventtime = html_writer::link($url, $day);
+            }
+echo "\n<!-- " . print_r($events[$i], true) . " -->\n";
+
+
+
+
+
+
+
+            $timeEnd =  $events[$i]->timestart + $events[$i]->timeduration;
             $content .= '<div class="date"><strong>'
                       . get_string('timefrom', 'block_sbupcoming')
                       . '</strong> <time class="upcoming-time-start" datetime="'
@@ -151,7 +198,7 @@ class block_sbupcoming extends block_base
                       . date_format_string($events[$i]->timestart, '%A %b %e, %l:%M %p')
                       . '</time>';
             if ($userMidnightEnd == $userMidnightStart) {
-                if ($events[$i]->timeduration != DAYSECS) {
+                if ($events[$i]->timeduration > 0) {
                     $content .= '<br><strong>'
                               . get_string('timeto', 'block_sbupcoming')
                               . '</strong> <time class="upcoming-time-end" datetime="'
