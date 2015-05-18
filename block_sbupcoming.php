@@ -153,7 +153,7 @@ class block_sbupcoming extends block_base
                     if ($events[$i]->timeduration == DAYSECS) {
                         $time = get_string('allday', 'calendar');
                     } else {
-                        $datestart = calendar_time_representation($events[$id]->timestart);
+                        $datestart = calendar_time_representation($events[$i]->timestart);
                         $deteend   = calendar_time_representation($endtime);
                         $time = $datestart . ' <strong>&raquo;</strong>' . $dateend;
                     }
