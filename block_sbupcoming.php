@@ -207,7 +207,7 @@ class block_sbupcoming extends block_base
                     //***********************
                         $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
                                                                          'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
-                                  . html_writer::link($url, $day)
+                                  . html_writer::link($url, $dayend)
                                   . trim($timeend);
 
                     }
