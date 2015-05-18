@@ -137,6 +137,11 @@ class block_sbupcoming extends block_base
             }
 
             // Format the time string displayed
+            $content .= html_writer::start_div('date')
+                      . html_writer::start_tag('strong')
+                      . get_string('timefrom', 'block_sbupcoming')
+                      . html_writer::end_tag('strong');
+
             $endtime =  $events[$i]->timestart + $events[$i]->timeduration;
             $now = time();
             $linkparams = array('view' => 'day');
@@ -159,29 +164,65 @@ class block_sbupcoming extends block_base
                     }
                     $day = calendar_day_representation($events[$i]->timestart, $now, true);
                     $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $endtime);
-                    $events[$i]->eventtime = html_writer::link($url, $day) . ', ' . $time;
-                } else {
+                    $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
+                                                                     'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
+                              . html_writer::link($url, $day)
+                              . ', '
+                              . trim($time);
+                    } else {
                     $daystart = calendar_day_representation($events[$i]->timestart, $now, true) . ', ';
                     $timestart = calendar_time_representation($events[$i]->timestart);
                     $dayend = calendar_day_representation($endtime, $now, true) . ', ';
                     $timeend = calendar_time_representation($endtime);
                     if (($now >= $userMidnightStart) && ($now < strtotime('+1 day', $userMidnightStart))) {
                         $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $endtime);
+
+                    //***********************
                         $events[$i]->eventtime = $timestart . ' <strong>&raquo;</strong> ' . html_writer::link($url, $dayend) . $timeend;
+                    //***********************
+                        $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
+                                                                         'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
+                                  . html_writer::link($url, $dayend)
+                                  . trim($timeend);
+
                     } else {
                         $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $endtime);
+
+                    //***********************
                         $events[$i]->eventtime = html_writer::link($url, $daystart) . $timestart . ' <strong>$raque;</strong> ';
+                    //***********************
+                        $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
+                                                                         'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
+                                  . html_writer::link($url, $daystart)
+                                  . trim($timestart)
+                                  . html_writer::end_tag('time');
+
                         $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $events[$i]->timestart);
+
+                    //***********************
                         $events[$i]->eventtime .= html_writer::link($url, $dayend) . $timeend;
+                    //***********************
+                        $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
+                                                                         'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
+                                  . html_writer::link($url, $day)
+                                  . trim($timeend);
+
                     }
                 }
             } else {    // No time duration
                 $time = calendar_time_representation($events[$i]->timestart);
                 $day = calendar_day_representation($events[$i]->timestart, $now, true);
                 $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $events[$i]->timestart);
-                $events[$i]->eventtime = html_writer::link($url, $day) . ', ' . trim($time);
+                $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
+                                                                 'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
+                          . html_writer::link($url, $day)
+                          . ', '
+                          . trim($time);
+
             }
-echo "\n<!-- " . print_r($events[$i], true) . " -->\n";
+            $content .= html_writer::end_tag('time')
+                      . html_writer::end_div()
+                      . html_writer::end_div();
 
 
 
@@ -189,33 +230,33 @@ echo "\n<!-- " . print_r($events[$i], true) . " -->\n";
 
 
 
-            $timeEnd =  $events[$i]->timestart + $events[$i]->timeduration;
-            $content .= '<div class="date"><strong>'
-                      . get_string('timefrom', 'block_sbupcoming')
-                      . '</strong> <time class="upcoming-time-start" datetime="'
-                      . date_format_string($events[$i]->timestart, '%FT%T')
-                      . '">'
-                      . date_format_string($events[$i]->timestart, '%A %b %e, %l:%M %p')
-                      . '</time>';
-            if ($userMidnightEnd == $userMidnightStart) {
-                if ($events[$i]->timeduration > 0) {
-                    $content .= '<br><strong>'
-                              . get_string('timeto', 'block_sbupcoming')
-                              . '</strong> <time class="upcoming-time-end" datetime="'
-                              . date_format_string($timeEnd, '%FT%T')
-                              . '">'
-                              . date_format_string($timeEnd, '%l:%M %p')
-                              . '</time></div></div>';
-                }
-            } else {
-                $content .= '<br><strong>'
-                          . get_string('timeuntil', 'block_sbupcoming')
-                          . '</strong> <time class="upcoming-time-end" datetime="'
-                          . date_format_string($timeEnd, '%FT%T')
-                          . '">'
-                          . date_format_string($timeEnd, '%A %b %e, %l:%M %p')
-                          . '</time></div></div>';
-            }
+//            $timeEnd =  $events[$i]->timestart + $events[$i]->timeduration;
+//            $content .= '<div class="date"><strong>'
+//                      . get_string('timefrom', 'block_sbupcoming')
+//                      . '</strong> <time class="upcoming-time-start" datetime="'
+//                      . date_format_string($events[$i]->timestart, '%FT%T')
+//                      . '">'
+//                      . date_format_string($events[$i]->timestart, '%A %b %e, %l:%M %p')
+//                      . '</time></div></div>';
+//            if ($userMidnightEnd == $userMidnightStart) {
+//                if ($events[$i]->timeduration > 0) {
+//                    $content .= '<br><strong>'
+//                              . get_string('timeto', 'block_sbupcoming')
+//                              . '</strong> <time class="upcoming-time-end" datetime="'
+//                              . date_format_string($timeEnd, '%FT%T')
+//                              . '">'
+//                              . date_format_string($timeEnd, '%l:%M %p')
+//                              . '</time></div></div>';
+//                }
+//            } else {
+//                $content .= '<br><strong>'
+//                          . get_string('timeuntil', 'block_sbupcoming')
+//                          . '</strong> <time class="upcoming-time-end" datetime="'
+//                          . date_format_string($timeEnd, '%FT%T')
+//                          . '">'
+//                          . date_format_string($timeEnd, '%A %b %e, %l:%M %p')
+//                          . '</time></div></div>';
+//            }
             if ($i < $lines - 1) {
                 $content .= '<hr>';
             }
