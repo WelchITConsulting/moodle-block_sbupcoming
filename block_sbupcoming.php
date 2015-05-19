@@ -205,9 +205,9 @@ class block_sbupcoming extends block_base
                                   . html_writer::link($url, $daystart)
                                   . trim($timestart)
                                   . html_writer::end_tag('time')
-                                  . html_writer::start_tag('strong')
-                                  . get_string('timeto', 'block_sbupcoming')
-                                  . html_writer::end_tag('strong');
+                                  . ' <strong>'
+                                  . get_string('timeuntil', 'block_sbupcoming')
+                                  . '</strong> ';
                         $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $events[$i]->timestart);
                         $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
                                                                          'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
