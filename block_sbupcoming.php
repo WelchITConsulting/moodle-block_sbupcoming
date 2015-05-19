@@ -193,24 +193,21 @@ class block_sbupcoming extends block_base
                     $timeend = calendar_time_representation($endtime);
                     if (($now >= $userMidnightStart) && ($now < strtotime('+1 day', $userMidnightStart))) {
                         $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $endtime);
-                        $content .= html_writer::start_tag('strong')
-                                  . get_string('timefrom', 'block_sbupcoming')
-                                  . html_writer::end_tag('strong')
-                                  . html_writer::start_tag('time', array('class'    => 'upcoming-start',
+                        $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
                                                                          'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
                                   . html_writer::link($url, $dayend)
                                   . trim($timeend)
                                   . html_write::end_tag('time');
                     } else {
                         $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $endtime);
-                        $content .= html_writer::start_tag('strong')
-                                  . get_string('timefrom', 'block_sbupcoming')
-                                  . html_writer::end_tag('strong')
-                                  . html_writer::start_tag('time', array('class'    => 'upcoming-start',
+                        $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
                                                                          'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
                                   . html_writer::link($url, $daystart)
                                   . trim($timestart)
-                                  . html_writer::end_tag('time');
+                                  . html_writer::end_tag('time')
+                                  . html_writer::start_tag('strong')
+                                  . get_string('timeto', 'block_sbupcoming')
+                                  . html_writer::end_tag('strong');
                         $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $events[$i]->timestart);
                         $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
                                                                          'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
