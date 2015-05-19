@@ -230,40 +230,6 @@ class block_sbupcoming extends block_base
             }
             $content .= html_writer::end_div()
                       . html_writer::end_div();
-
-
-
-
-
-
-
-//            $timeEnd =  $events[$i]->timestart + $events[$i]->timeduration;
-//            $content .= '<div class="date"><strong>'
-//                      . get_string('timefrom', 'block_sbupcoming')
-//                      . '</strong> <time class="upcoming-time-start" datetime="'
-//                      . date_format_string($events[$i]->timestart, '%FT%T')
-//                      . '">'
-//                      . date_format_string($events[$i]->timestart, '%A %b %e, %l:%M %p')
-//                      . '</time></div></div>';
-//            if ($userMidnightEnd == $userMidnightStart) {
-//                if ($events[$i]->timeduration > 0) {
-//                    $content .= '<br><strong>'
-//                              . get_string('timeto', 'block_sbupcoming')
-//                              . '</strong> <time class="upcoming-time-end" datetime="'
-//                              . date_format_string($timeEnd, '%FT%T')
-//                              . '">'
-//                              . date_format_string($timeEnd, '%l:%M %p')
-//                              . '</time></div></div>';
-//                }
-//            } else {
-//                $content .= '<br><strong>'
-//                          . get_string('timeuntil', 'block_sbupcoming')
-//                          . '</strong> <time class="upcoming-time-end" datetime="'
-//                          . date_format_string($timeEnd, '%FT%T')
-//                          . '">'
-//                          . date_format_string($timeEnd, '%A %b %e, %l:%M %p')
-//                          . '</time></div></div>';
-//            }
             if ($i < $lines - 1) {
                 $content .= html_writer::empty_tag('hr');
             }
