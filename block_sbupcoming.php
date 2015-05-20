@@ -209,7 +209,7 @@ class block_sbupcoming extends block_base
                                   . get_string('timeuntil', 'block_sbupcoming')
                                   . '</strong> ';
                         $url = calendar_get_link_href(new moodle_url(CALENDAR_URL . 'view.php', $linkparams), 0, 0, 0, $events[$i]->timestart);
-                        $content .= html_writer::start_tag('time', array('class'    => 'upcoming-start',
+                        $content .= html_writer::start_tag('time', array('class'    => 'upcoming-end',
                                                                          'datetime' => date_format_string($events[$i]->timestart, '%FT%T')))
                                   . html_writer::link($url, $dayend)
                                   . trim($timeend)

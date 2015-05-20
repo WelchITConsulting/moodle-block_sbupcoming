@@ -23,5 +23,5 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version    = 2015051901;
-$plugin->requires   = 2015051100;
+$plugin->requires   = 2013051402;
 $plugin->component  = 'block_sbupcoming';
